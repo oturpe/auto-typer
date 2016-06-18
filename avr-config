@@ -1,0 +1,5 @@
+projectName=auto-typer
+sourceDir=src
+targetDir=target
+mcu=atmega88p
+programmer=arduinoisp
