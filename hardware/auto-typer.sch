@@ -529,24 +529,24 @@ F 3 "" H 6800 4000 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Entry Wire Line
-	4900 4350 5000 4250
+	4900 5200 5000 5100
 Entry Wire Line
-	4900 4450 5000 4350
+	4900 5300 5000 5200
 Entry Wire Line
-	4900 4550 5000 4450
+	4900 5400 5000 5300
 Entry Wire Line
-	4900 4650 5000 4550
+	4900 5500 5000 5400
 Entry Wire Line
-	4900 4750 5000 4650
-Text Label 4600 4350 0    60   ~ 0
+	4900 5600 5000 5500
+Text Label 4600 5200 0    60   ~ 0
 C1
-Text Label 4600 4450 0    60   ~ 0
+Text Label 4600 5300 0    60   ~ 0
 C2
-Text Label 4600 4550 0    60   ~ 0
+Text Label 4600 5400 0    60   ~ 0
 C3
-Text Label 4600 4650 0    60   ~ 0
+Text Label 4600 5500 0    60   ~ 0
 C4
-Text Label 4600 4750 0    60   ~ 0
+Text Label 4600 5600 0    60   ~ 0
 C5
 $Comp
 L Q_NMOS_GDS Q6
@@ -615,11 +615,6 @@ F 3 "" H 6900 5100 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 NoConn ~ 4500 5800
-NoConn ~ 4500 5600
-NoConn ~ 4500 5500
-NoConn ~ 4500 5400
-NoConn ~ 4500 5300
-NoConn ~ 4500 5200
 NoConn ~ 4500 5100
 NoConn ~ 4500 4850
 NoConn ~ 4500 3700
@@ -729,7 +724,7 @@ Wire Wire Line
 Wire Bus Line
 	1200 2800 5000 2800
 Wire Bus Line
-	5000 2800 5000 4650
+	5000 2800 5000 5500
 Wire Wire Line
 	1700 1600 1400 1600
 Wire Wire Line
@@ -753,15 +748,15 @@ Wire Wire Line
 Wire Wire Line
 	4500 3500 4500 3100
 Wire Wire Line
-	4900 4350 4500 4350
+	4900 5200 4500 5200
 Wire Wire Line
-	4900 4450 4500 4450
+	4900 5300 4500 5300
 Wire Wire Line
-	4900 4550 4500 4550
+	4900 5400 4500 5400
 Wire Wire Line
-	4900 4650 4500 4650
+	4900 5500 4500 5500
 Wire Wire Line
-	4900 4750 4500 4750
+	4900 5600 4500 5600
 Wire Wire Line
 	4500 4100 6200 4100
 Wire Wire Line
@@ -811,4 +806,9 @@ Wire Wire Line
 	6200 3200 6200 3500
 Wire Wire Line
 	6200 3500 6100 3500
+NoConn ~ 4500 4350
+NoConn ~ 4500 4450
+NoConn ~ 4500 4550
+NoConn ~ 4500 4650
+NoConn ~ 4500 4750
 $EndSCHEMATC
