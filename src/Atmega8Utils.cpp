@@ -1,13 +1,13 @@
-#include "Atmega88pUtils.h"
+#include "Atmega8Utils.h"
 
 #include <avr/io.h>
 
-namespace Atmega88p {
+namespace Atmega8 {
 
 void initializeTimer0(
     TimerPrescalerValue prescalerValue,
     WaveformGenerationMode mode,
-    bool topAtOcra
+    CounterTop top
 ) {
     switch (prescalerValue) {
     case PSV_1:
@@ -33,13 +33,13 @@ void initializeTimer0(
         break;
     case PWM_PHASE_CORRECT:
         TCCR0A |= BV(WGM00);
-        if (topAtOcra) {
+        if (top == TOP_OCRA) {
             TCCR0B |= BV(WGM02);
         }
         break;
     case PWM_FAST:
         TCCR0A |= BV(WGM01) | BV(WGM00);
-        if (topAtOcra) {
+        if (top == TOP_OCRA) {
             TCCR0B |= BV(WGM02);
         }
         break;
@@ -49,10 +49,91 @@ void initializeTimer0(
     }
 }
 
+void initializeTimer1(
+    TimerPrescalerValue prescalerValue,
+    WaveformGenerationMode mode,
+    CounterTop top
+) {
+    switch (prescalerValue) {
+    case PSV_1:
+        TCCR1B |= BV(CS10);
+        break;
+    case PSV_8:
+        TCCR1B |= BV(CS11);
+        break;
+    case PSV_64:
+        TCCR1B |= BV(CS11) | BV(CS10);
+        break;
+    case PSV_256:
+        TCCR1B |= BV(CS12);
+        break;
+    case PSV_1024:
+        TCCR1B |= BV(CS12) | BV(CS10);
+        break;
+    }
+
+    switch (mode) {
+    case NORMAL:
+        // The default, nothing to do
+        break;
+    case PWM_PHASE_CORRECT:
+        switch (top) {
+        case TOP_00FF:
+            TCCR1A |= BV(WGM10);
+            break;
+        case TOP_01FF:
+            TCCR1A |= BV(WGM11);
+            break;
+        case TOP_02FF:
+            TCCR1A |= BV(WGM11) | BV(WGM10);
+            break;
+        case TOP_ICR:
+            TCCR1B |= BV(WGM13);
+            TCCR1A |= BV(WGM11);
+            break;
+        case TOP_OCRA:
+            TCCR1B |= BV(WGM13);
+            TCCR1A |= BV(WGM11) | BV(WGM10);
+            break;
+        }
+        break;
+    case PWM_FAST:
+        switch (top) {
+        case TOP_00FF:
+            TCCR1B |= BV(WGM12);
+            TCCR1A |= BV(WGM10);
+            break;
+        case TOP_01FF:
+            TCCR1B |= BV(WGM12);
+            TCCR1A |= BV(WGM11);
+            break;
+        case TOP_02FF:
+            TCCR1B |= BV(WGM12);
+            TCCR1A |= BV(WGM11) | BV(WGM10);
+            break;
+        case TOP_ICR:
+            TCCR1B |= BV(WGM13) | BV(WGM12);
+            TCCR1A |= BV(WGM11);
+            break;
+        case TOP_OCRA:
+            TCCR1B |= BV(WGM13) | BV(WGM12);
+            TCCR1A |= BV(WGM11) | BV(WGM10);
+            break;
+        }
+        break;
+    case PWM_PHASE_AND_FREQUENCY_CORRECT:
+        // TODO: Not implemented yet
+        break;
+    case CTC:
+        // TODO: Not implemented yet
+        break;
+    }
+}
+
 void initializeTimer2(
     TimerPrescalerValue prescalerValue,
     WaveformGenerationMode mode,
-    bool topAtOcra
+    CounterTop top
 ) {
     switch (prescalerValue) {
         case PSV_1:
@@ -84,13 +165,13 @@ void initializeTimer2(
         break;
     case PWM_PHASE_CORRECT:
         TCCR2A |= BV(WGM20);
-        if (topAtOcra) {
+        if (top == TOP_OCRA) {
             TCCR2B |= BV(WGM22);
         }
         break;
     case PWM_FAST:
         TCCR2A |= BV(WGM21) | BV(WGM20);
-        if (topAtOcra) {
+        if (top == TOP_OCRA) {
             TCCR2B |= BV(WGM22);
         }
         break;

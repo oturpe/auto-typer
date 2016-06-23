@@ -1,9 +1,21 @@
-// Helpers for working with Atmega88p.
+// Helpers for working with Atmega8 series.
+//
+// Works with the following models:
+//    atmega48a
+//    atmega48pa
+//    atmega88a
+//    atmega88pa
+//    atmega168a
+//    atmega168pa
+//    atmega328
+//    atmega328p
+//
+// Perhaps also with models with no 'a' designator, or with 'v' designator?
 
 // Cleaner setting of bits
 #define BV(x) (1<<x)
 
-namespace Atmega88p {
+namespace Atmega8 {
 
 /// Possible prescaler values for timers.
 enum TimerPrescalerValue {
@@ -16,12 +28,24 @@ enum TimerPrescalerValue {
     PSV_1024,
 };
 
-// Possible waveform generation modes for times.
+/// \enum WaveformGenerationMode
+///    Possible waveform generation modes
 enum WaveformGenerationMode {
     NORMAL,
     PWM_PHASE_CORRECT,
+    PWM_PHASE_AND_FREQUENCY_CORRECT, // timer 1 only
     PWM_FAST,
     CTC
+};
+
+/// \enum CounterTop
+///    Top value for counter
+enum CounterTop {
+    TOP_00FF,
+    TOP_01FF, // timer 1 only
+    TOP_02FF, // timer 1 only
+    TOP_ICR, // timer 1 only
+    TOP_OCRA
 };
 
 /// Initializes timer 0 by setting waveform generation mode and prescaler.
@@ -31,7 +55,7 @@ enum WaveformGenerationMode {
 /// Timer0PrescalerValue values. If illegal value is entered, prescaler is not
 /// set to any value.
 ///
-/// Parameter topAtOcra toggles using OCRA register values as the TOP for pulse
+/// Parameter top toggles using OCRA register values as the TOP for pulse
 /// width modulation. It it only used if mode is either PWM_PHASE_CORRECT or
 /// PWM_FAST.
 ///
@@ -41,12 +65,36 @@ enum WaveformGenerationMode {
 /// \param mode
 ///    Waveform generation mode
 ///
-/// \param topAtOcra
-///    If TOP value should be set to OCRA register value
+/// \param top
+///    Selection of counter TOP
 void initializeTimer0(
     TimerPrescalerValue prescalerValue,
     WaveformGenerationMode mode,
-    bool topAtOcra
+    CounterTop top
+);
+
+/// Initializes timer 1 by setting waveform generation mode and prescaler.
+///
+/// This function assumes that neither Clock Select nor Waveform Generation bits
+/// have not been touched yet. Note that timer 1 does not support all
+/// TimerPrescalerValue values. If illegal value is entered, prescaler is not
+/// set to any value.
+///
+/// Parameter top selects the TOP value for timer. It it only used if mode is
+/// either PWM_PHASE_CORRECT, PWM_PHASE_AND_FREQUENCY_CORRECT or PWM_FAST.
+///
+/// \param prescalerValue
+///    Requested prescaler value
+///
+/// \param mode
+///    Waveform generation mode
+///
+/// \param top
+///    Selection of counter TOP
+void initializeTimer1(
+    TimerPrescalerValue prescalerValue,
+    WaveformGenerationMode mode,
+    CounterTop top
 );
 
 /// Initializes timer 2 by setting waveform generation mode and prescaler.
@@ -54,7 +102,7 @@ void initializeTimer0(
 /// This function assumes that neither Clock Select nor Waveform Generation bits
 /// have not been touched yet.
 ///
-/// Parameter topAtOcra toggles using OCRA register values as the TOP for pulse
+/// Parameter top toggles using OCRA register values as the TOP for pulse
 /// width modulation. It it only used if mode is either PWM_PHASE_CORRECT or
 /// PWM_FAST.
 ///
@@ -64,12 +112,12 @@ void initializeTimer0(
 /// \param mode
 ///    Waveform generation mode
 ///
-/// \param topAtOcra
-///    If TOP value should be set to OCRA register value
+/// \param top
+///    Selection of counter TOP
 void initializeTimer2(
     TimerPrescalerValue prescalerValue,
     WaveformGenerationMode mode,
-    bool topAtOcra
+    CounterTop top
 );
 
 // Possible voltage references
